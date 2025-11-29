@@ -243,6 +243,40 @@ A complete, reproducible lab that walks you through:
 ├── docker-compose.yml
 └── README.md              # ← you are here
 Copy
+![IMG-20251125-WA0001](https://github.com/user-attachments/assets/486bd636-4163-44f1-bf63-1eb491425ec9)
+
+![IMG-20251125-WA0002](https://github.com/user-attachments/assets/4d05943d-5513-4f66-a165-b8a8fc82869a)
+
+
+![IMG-20251125-WA0003](https://github.com/user-attachments/assets/96a1f0f2-5d23-44a6-9c96-916e03a794c8)
+
+![IMG-20251125-WA0004](https://github.com/user-attachments/assets/5726c11c-4430-4005-9431-23f2682cd764)
+
+![IMG-20251125-WA0005](https://github.com/user-attachments/assets/5bfbe0c4-8476-4f76-8460-f19b3d48bc53)
+
+![IMG-20251125-WA0006](https://github.com/user-attachments/assets/50561b4a-a32c-405d-8a2b-9a4770b02a2b)
+
+![IMG-20251125-WA0007](https://github.com/user-attachments/assets/ec70220d-4815-4489-a304-af54b05a4f4f)
+
+![IMG-20251125-WA0008](https://github.com/user-attachments/assets/22e7b87d-8328-403d-9d6c-bbd20819b84b)
+
+![IMG-20251125-WA0009](https://github.com/user-attachments/assets/84acf475-2f53-4b2b-bc8a-f701919b9c0d)
+
+![IMG-20251125-WA0010](https://github.com/user-attachments/assets/fd3ee464-2005-4da6-93eb-86774265abfa)
+
+![IMG-20251125-WA0011](https://github.com/user-attachments/assets/36d2e7f4-9264-4b1e-907b-d95c1687e2bf)
+
+![IMG-20251125-WA0012](https://github.com/user-attachments/assets/f079de18-de6e-444c-ba45-deed396682db)
+
+![IMG-20251125-WA0018](https://github.com/user-attachments/assets/e3fb871d-897c-40bf-871a-4db0b7008bc8)
+
+![IMG-20251125-WA0020](https://github.com/user-attachments/assets/cf4870ab-dcaa-464b-b3d8-5397b4b4a749)
+
+![IMG-20251125-WA0019](https://github.com/user-attachments/assets/0986588f-c5d2-4132-a314-170051214b2a)
+
+![IMG-20251125-WA0021](https://github.com/user-attachments/assets/592387e5-f7a9-4d27-b80a-d5b3b4225747)
+
+
 
 ---
 
@@ -287,22 +321,8 @@ sudo systemctl enable --now jenkins
 # Unlock at http://<IP>:8080
 # Install plugins: Pipeline, AWS Credentials, AWS Pipeline Steps
 # Create pipeline job, paste configs/jenkins-pipeline.groovy
-![IMG-20251125-WA0001](https://github.com/user-attachments/assets/486bd636-4163-44f1-bf63-1eb491425ec9)
-![IMG-20251125-WA0002](https://github.com/user-attachments/assets/4d05943d-5513-4f66-a165-b8a8fc82869a)
-![IMG-20251125-WA0003](https://github.com/user-attachments/assets/96a1f0f2-5d23-44a6-9c96-916e03a794c8)
-![IMG-20251125-WA0004](https://github.com/user-attachments/assets/5726c11c-4430-4005-9431-23f2682cd764)
-![IMG-20251125-WA0005](https://github.com/user-attachments/assets/5bfbe0c4-8476-4f76-8460-f19b3d48bc53)
-![IMG-20251125-WA0006](https://github.com/user-attachments/assets/50561b4a-a32c-405d-8a2b-9a4770b02a2b)
-![IMG-20251125-WA0007](https://github.com/user-attachments/assets/ec70220d-4815-4489-a304-af54b05a4f4f)
-![IMG-20251125-WA0008](https://github.com/user-attachments/assets/22e7b87d-8328-403d-9d6c-bbd20819b84b)
-![IMG-20251125-WA0009](https://github.com/user-attachments/assets/84acf475-2f53-4b2b-bc8a-f701919b9c0d)
-![IMG-20251125-WA0010](https://github.com/user-attachments/assets/fd3ee464-2005-4da6-93eb-86774265abfa)
-![IMG-20251125-WA0011](https://github.com/user-attachments/assets/36d2e7f4-9264-4b1e-907b-d95c1687e2bf)
-![IMG-20251125-WA0012](https://github.com/user-attachments/assets/f079de18-de6e-444c-ba45-deed396682db)
-![IMG-20251125-WA0018](https://github.com/user-attachments/assets/e3fb871d-897c-40bf-871a-4db0b7008bc8)
-![IMG-20251125-WA0020](https://github.com/user-attachments/assets/cf4870ab-dcaa-464b-b3d8-5397b4b4a749)
-![IMG-20251125-WA0019](https://github.com/user-attachments/assets/0986588f-c5d2-4132-a314-170051214b2a)
-![IMG-20251125-WA0021](https://github.com/user-attachments/assets/592387e5-f7a9-4d27-b80a-d5b3b4225747)
+
+
 
 8. Docker
 bash
