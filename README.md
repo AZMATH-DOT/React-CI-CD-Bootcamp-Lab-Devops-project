@@ -287,16 +287,6 @@ sudo systemctl enable --now jenkins
 # Unlock at http://<IP>:8080
 # Install plugins: Pipeline, AWS Credentials, AWS Pipeline Steps
 # Create pipeline job, paste configs/jenkins-pipeline.groovy
-8. Docker
-bash
-Copy
-docker-compose up --build -d
-# App now on http://<IP>:3000
-🔐 Security Checklist
-[ ] UFW active (only 22, 80, 443, 3000, 8080 open)
-[ ] EC2 security group tightened
-[ ] Jenkins admin password changed
-[ ] S3 bucket policy least-privilege
 ![IMG-20251125-WA0001](https://github.com/user-attachments/assets/486bd636-4163-44f1-bf63-1eb491425ec9)
 ![IMG-20251125-WA0002](https://github.com/user-attachments/assets/4d05943d-5513-4f66-a165-b8a8fc82869a)
 ![IMG-20251125-WA0003](https://github.com/user-attachments/assets/96a1f0f2-5d23-44a6-9c96-916e03a794c8)
@@ -313,3 +303,14 @@ docker-compose up --build -d
 ![IMG-20251125-WA0020](https://github.com/user-attachments/assets/cf4870ab-dcaa-464b-b3d8-5397b4b4a749)
 ![IMG-20251125-WA0019](https://github.com/user-attachments/assets/0986588f-c5d2-4132-a314-170051214b2a)
 ![IMG-20251125-WA0021](https://github.com/user-attachments/assets/592387e5-f7a9-4d27-b80a-d5b3b4225747)
+
+8. Docker
+bash
+Copy
+docker-compose up --build -d
+# App now on http://<IP>:3000
+🔐 Security Checklist
+[ ] UFW active (only 22, 80, 443, 3000, 8080 open)
+[ ] EC2 security group tightened
+[ ] Jenkins admin password changed
+[ ] S3 bucket policy least-privilege
