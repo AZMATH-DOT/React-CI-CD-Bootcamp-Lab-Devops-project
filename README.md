@@ -313,24 +313,215 @@ bash
 Copy
 sudo cp configs/nginx-default /etc/nginx/sites-available/default
 sudo systemctl reload nginx
-7. Jenkins CI/CD
+ CI/CD
+Step 1: Set Up Jenkins
+Install Jenkins:
 bash
 Copy
-# Install Jenkins (already done in 01-setup-ec2.sh)
-sudo systemctl enable --now jenkins
-# Unlock at http://<IP>:8080
-# Install plugins: Pipeline, AWS Credentials, AWS Pipeline Steps
-# Create pipeline job, paste configs/jenkins-pipeline.groovy
-
-
-
-8. Docker
-bash
+sudo apt update
+sudo apt install -y openjdk-11-jdk
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+echo "deb https://pkg.jenkins.io/debian-stable binary/" | sudo tee -a /etc/apt/sources.list
+sudo apt update
+sudo apt install -y jenkins
+Access Jenkins:
+Open a web browser and go to http://<your-public-ip>:8080.
+Follow the instructions to unlock Jenkins using the initial admin password found in /var/lib/jenkins/secrets/initialAdminPassword.
+Step 2: Create a Jenkins Pipeline Job
+Install Necessary Plugins:
+Install the "Pipeline" plugin and any other required plugins.
+Create a New Job:
+Go to Jenkins Dashboard.
+Click "New Item."
+Enter a name for the job, select "Pipeline," and click "OK."
+Configure the Pipeline:
+In the job configuration, add the following pipeline script:
+groovy
 Copy
-docker-compose up --build -d
-# App now on http://<IP>:3000
-🔐 Security Checklist
-[ ] UFW active (only 22, 80, 443, 3000, 8080 open)
-[ ] EC2 security group tightened
-[ ] Jenkins admin password changed
-[ ] S3 bucket policy least-privilege
+pipeline {
+    agent any
+    stages {
+        stage('Stop Deployment') {
+            steps {
+                sh 'pm2 stop all'
+            }
+        }
+        stage('Pull Fresh Code') {
+            steps {
+                sh 'cd /opt/checkout/chat-app && git pull'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'cd /opt/checkout/chat-app && npm install && npm run build'
+                sh 'rm -rf /opt/deployment/react/*'
+                sh 'cp -r /opt/checkout/chat-app/build/* /opt/deployment/react/'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'cd /opt/deployment/react && pm2 serve build 80 --spa'
+            }
+        }
+        stage('Upload to S3') {
+            steps {
+                // Add your S3 upload script here
+            }
+        }
+    }
+}
+Install S3 Plugin:
+Install the "AWS Credentials" and "AWS Pipeline Steps" plugins.
+Update Pipeline to Upload to S3:
+Add the S3 upload step in the pipeline script.
+Part 5: Dockerize the React App
+Step 1: Create Dockerfile
+Create Dockerfile:
+dockerfile
+Copy
+FROM node:14-alpine as build
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
+Step 1: Set Up Jenkins
+Install Jenkins:
+sudo apt update
+sudo apt install -y openjdk-21-jdk
+wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+echo "deb https://pkg.jenkins.io/debian-stable binary/" | sudo tee -a /etc/apt/sources.list
+sudo apt update
+sudo apt install -y jenkins
+Access Jenkins:
+Open a web browser and go to http://<your-public-ip>:8080.
+Follow the instructions to unlock Jenkins using the initial admin password found in /var/lib/jenkins/secrets/initialAdminPassword.
+ Create a Jenkins Pipeline Job.
+1. Install Necessary Plugins
+AWS Credentials Plugin:
+Go to Jenkins Dashboard.
+Click on "Manage Jenkins."
+Click on "Manage Plugins."
+In the "Available" tab, search for "AWS Credentials" and install it.
+| Plugin Name              | Purpose                                    |
+| ------------------------ | ------------------------------------------ |
+| **Pipeline**             | Enables Jenkinsfile / Groovy pipelines     |
+| **Pipeline: Stage View** | Visual stage-by-stage progress             |
+| **Git**                  | Clone from GitHub                          |
+| **GitHub**               | Webhooks & commit status                   |
+| **Credentials**          | Secure storage for passwords, keys, tokens |
+| **Credentials Binding**  | Inject credentials into pipeline steps     |
+and
+
+| Plugin Name                        | Purpose                                          |
+| ---------------------------------- | ------------------------------------------------ |
+| **AWS Credentials**                | Store IAM Access Key / Secret in Jenkins         |
+| **Pipeline: AWS Steps**            | Adds `withAWS` and `s3Upload`/`s3Download` steps |
+| **Amazon EC2 Plugin** *(optional)* | Launch agents on EC2 if you want dynamic workers |
+2. Create a New Job
+Go to Jenkins Dashboard.
+Click "New Item."
+Enter a name for the job (e.g., "React-App-Pipeline"), select "Pipeline," and click "OK.
+3. Configure the Pipeline
+In the job configuration, scroll down to the "Pipeline" section.
+Adpipeline {
+    agent any
+    environment {
+        // Define environment variables for AWS credentials
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_REGION = 'us-west-2' // Change to your desired region
+        S3_BUCKET = 'your-s3-bucket-name'
+    }
+    stages {
+        stage('Stop Deployment') {
+            steps {
+                sh 'pm2 stop all'
+            }
+        }
+        stage('Pull Fresh Code') {
+            steps {
+                sh 'cd /opt/checkout/chat-app && git pull'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'cd /opt/checkout/chat-app && npm install && npm run build'
+                sh 'rm -rf /opt/deployment/react/*'
+                sh 'cp -r /opt/checkout/chat-app/build/* /opt/deployment/react/'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'cd /opt/deployment/react && pm2 serve build 80 --spa'
+            }
+        }
+        stage('Upload to S3') {
+            steps {
+                script {
+                    // Define the S3 upload step
+                    sh '''
+                    aws s3 sync /opt/deployment/react/ s3://$S3_BUCKET --delete
+                    '''
+                }
+            }
+        }
+    }
+}
+4. Configure AWS Credentials
+Go to Jenkins Dashboard.
+Click on "Credentials."
+Click on "System."
+Click on "Global credentials (unrestricted)."
+Click "Add Credentials."
+Kind: AWS Credentials
+Scope: Global
+Access Key ID: Your AWS Access Key ID
+Secret Access Key: Your AWS Secret Access Key
+Description: AWS Credentials for S3 Upload
+Click "OK."
+
+ Dockerize the React App
+Step 1: Create Dockerfile.
+FROM node:14-alpine as build
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
+
+Step 2: Create docker-compose.yml
+
+version: '3'
+services:
+  react-app:
+    build: .
+    ports:
+      - "3000:80"
+Step 3: Build and Run the Docker Container
+cd /opt/checkout/chat-app
+Build the Docker Image:
+sudo docker-compose build
+sudo docker-compose up -d.
+
+
+Explanation of the Pipeline
+Stop Deployment:
+This stage stops any currently running pm2 processes to ensure a clean deployment.
+Pull Fresh Code:
+This stage pulls the latest code from the Git repository to ensure you're working with the most recent version.
+Build:
+This stage installs dependencies and builds the React project. It then moves the build files to the deployment directory.
+Deploy:
+This stage serves the built React app using pm2 on port 80.
+Upload to S3:
+This stage uses the AWS CLI to sync the build directory with an S3 bucket, ensuring that the latest build is uploaded to S3.
+
+
+
